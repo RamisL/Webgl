@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - geometry - cube</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link type="text/css" rel="stylesheet" href="main.css">
+	</head>
+	<body>
+
+		<script type="module">
+
+			import * as THREE from '../build/three.module.js';
+			import { OrbitControls } from './jsm/controls/OrbitControls.js';
+
+			var camera, scene, renderer;
+			var mesh;
+			var basPillier = [];
+			var pillier = [];
+			var hautPillier = [];
+			var dist = 450;
+			var solTemple = [];
+			var grass, floorTemple, basToit, midToit,topToit,toit;
+			
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 100, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 2500;
+
+				scene = new THREE.Scene();
+				
+				//Toit
+				var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+				var geometry = new THREE.ConeGeometry( 1480, 570, 4 , 0, false, 0.8 );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+				var toit = new THREE.Mesh( geometry, material );
+				toit.position.set( 0, 1150 ,-900 );
+				scene.add( toit );
+
+				var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+				var geometry = new THREE.BoxBufferGeometry( 2000, 50, 2000 );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+				topToit = new THREE.Mesh( geometry, material );
+				topToit.position.set( 0, 895 ,-900 );
+
+				var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+				var geometry = new THREE.BoxBufferGeometry( 2000, 50, 2000 );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+				topToit = new THREE.Mesh( geometry, material );
+				topToit.position.set( 0, 895 ,-900 );
+
+				var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+				var geometry = new THREE.BoxBufferGeometry( 1900, 200, 1900 );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+				midToit = new THREE.Mesh( geometry, material );
+				midToit.position.set( 0,  775,-900 );
+
+				var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+				var geometry = new THREE.BoxBufferGeometry( 2000, 50, 2000 );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+				basToit = new THREE.Mesh( geometry, material );
+				basToit.position.set( 0, 695 ,-900 );
+
+				scene.add(basToit,midToit,topToit)
+				//Pillier FACE
+				for (let i = 0; i <=4 ; i++) {
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					basPillier[i] = new THREE.Mesh( geometry, material );
+					basPillier[i].position.set( -900+(dist*i), 0, 0 );
+
+					scene.add( basPillier[i] );
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.CylinderBufferGeometry( 50, 50, 600, 320 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+					pillier[i] = new THREE.Mesh( geometry, material );
+
+					pillier[i].position.set( -900+(dist*i), 325, 0 );
+					
+					scene.add(pillier[i])
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					hautPillier[i] = new THREE.Mesh( geometry, material );
+					hautPillier[i].position.set( -900+(dist*i), 650, 0 );
+
+					scene.add( hautPillier[i] );
+					
+				}
+				//Pillier GAUCHE
+				for (let i = 0; i <=4 ; i++) {
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					basPillier[i] = new THREE.Mesh( geometry, material );
+					basPillier[i].position.set( -900, 0, 0-(dist*i) );
+
+					scene.add( basPillier[i] );
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.CylinderBufferGeometry( 50, 50, 600, 320 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+					pillier[i] = new THREE.Mesh( geometry, material );
+
+					pillier[i].position.set( -900, 325, 0-(dist*i) );
+					
+					scene.add(pillier[i])
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					hautPillier[i] = new THREE.Mesh( geometry, material );
+					hautPillier[i].position.set( -900, 650, 0-(dist*i) );
+
+					scene.add( hautPillier[i] );
+					
+				}
+				//Pillier DROITE
+				for (let i = 0; i <=4 ; i++) {
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					basPillier[i] = new THREE.Mesh( geometry, material );
+					basPillier[i].position.set( 900, 0, 0-(dist*i) );
+
+					scene.add( basPillier[i] );
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.CylinderBufferGeometry( 50, 50, 600, 320 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+					pillier[i] = new THREE.Mesh( geometry, material );
+
+					pillier[i].position.set( 900, 325, 0-(dist*i) );
+					
+					scene.add(pillier[i])
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					hautPillier[i] = new THREE.Mesh( geometry, material );
+					hautPillier[i].position.set( 900, 650, 0-(dist*i) );
+
+					scene.add( hautPillier[i] );
+					
+				}
+				//Pillier BACK
+				for (let i = 0; i <=4 ; i++) {
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					basPillier[i] = new THREE.Mesh( geometry, material );
+					basPillier[i].position.set( -900+(dist*i), 0, -1800 );
+
+					scene.add( basPillier[i] );
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.CylinderBufferGeometry( 50, 50, 600, 320 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+					pillier[i] = new THREE.Mesh( geometry, material );
+
+					pillier[i].position.set( -900+(dist*i), 325, -1800 );
+					
+					scene.add(pillier[i])
+
+					var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+					var geometry = new THREE.BoxBufferGeometry( 200, 50, 200 );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					hautPillier[i] = new THREE.Mesh( geometry, material );
+					hautPillier[i].position.set( -900+(dist*i), 650, -1800 );
+
+					scene.add( hautPillier[i] );
+					
+				}
+
+				//SOL TEMPLE
+				var texture = new THREE.TextureLoader().load( 'textures/marble.webp' );
+				var geometry = new THREE.BoxBufferGeometry( 2000, 1, 2000 );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+				floorTemple = new THREE.Mesh( geometry, material );
+				floorTemple.position.set( 0, -11 ,-900 );
+
+				scene.add(floorTemple)
+
+				//ESCLALIER TEMPLE
+				for(let i = 0; i <=2 ; i++){
+					var texture = new THREE.TextureLoader().load( 'textures/grayMarble.jpg' );
+					var geometry = new THREE.BoxBufferGeometry( 2500+(dist*i), 75, 2500+(dist*i) );
+					var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+					solTemple[i] = new THREE.Mesh( geometry, material );
+					solTemple[i].position.set( 0, -50-(75*i), -900 );
+
+					scene.add(solTemple[i])
+				}
+
+				var texture = new THREE.TextureLoader().load( 'textures/grass.jpg' );
+				var geometry = new THREE.BoxBufferGeometry( 10000, 1, 10000  );
+				var material = new THREE.MeshBasicMaterial( { map: texture } );
+
+				grass = new THREE.Mesh( geometry, material );
+				grass.position.y =-200;
+								
+				scene.add(grass)
+				
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				//
+				var controls = new OrbitControls( camera, renderer.domElement );
+				
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				/*mesh.rotation.x += 0.005;
+				mesh.rotation.y += 0.01;*/
+
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+
+	</body>
+</html>
